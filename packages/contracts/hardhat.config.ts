@@ -31,6 +31,12 @@ const config: HardhatUserConfig = {
       saveDeployments: false,
       tags: ['local'],
     },
+    bicocca: {
+      url: 'http://127.0.0.1:8545',
+      saveDeployments: false,
+      accounts: [privateKey],
+      chainId: 29313331,
+    },
     optimism: {
       url: 'http://127.0.0.1:8545',
       saveDeployments: false,
@@ -60,6 +66,12 @@ const config: HardhatUserConfig = {
     },
     mainnet: {
       chainId: 1,
+      url: process.env.CONTRACTS_RPC_URL || '',
+      deploy,
+      accounts: [privateKey],
+    },
+    gnosischain: {
+      chainId: 100,
       url: process.env.CONTRACTS_RPC_URL || '',
       deploy,
       accounts: [privateKey],
@@ -116,10 +128,27 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      mainnet: process.env.ETHERSCAN_API_KEY,
-      optimisticEthereum: process.env.OPTIMISTIC_ETHERSCAN_API_KEY,
-      goerli: process.env.ETHERSCAN_API_KEY,
+      gnosischain: process.env.ETHERSCAN_API_KEY,
+      bicocca: process.env.ETHERSCAN_API_KEY,
     },
+    customChains: [
+      {
+        network: 'gnosischain',
+        chainId: 100,
+        urls: {
+          apiURL: 'https://api.gnosisscan.io',
+          browserURL: 'https://gnosisscan.io',
+        },
+      },
+      {
+        network: 'bicocca',
+        chainId: 29313331,
+        urls: {
+          apiURL: 'https://blockscout.bicoccachain.net/api',
+          browserURL: 'https://blockscout.bicoccachain.net',
+        },
+      },
+    ],
   },
   dodoc: {
     runOnCompile: true,
